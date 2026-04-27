@@ -367,6 +367,44 @@ const CALCULATORS = [
 
 const CATEGORIES = ['All', 'Investment', 'Loan', 'Planning', 'Tax'];
 
+const SEO_KEYWORD_GROUPS = [
+  {
+    title: 'Investment Calculators',
+    text: 'Use VestoraX as a SIP calculator, lumpsum calculator, CAGR calculator, compound interest calculator, FD calculator, RD calculator, SWP calculator, and mutual fund investment calculator for long-term wealth planning.',
+  },
+  {
+    title: 'Loan Calculators',
+    text: 'Plan debt with our EMI calculator, loan eligibility calculator, home loan EMI calculator, personal loan EMI calculator, auto loan calculator, and balance transfer calculator.',
+  },
+  {
+    title: 'Planning Calculators',
+    text: 'Estimate future goals with a retirement calculator, goal planner, inflation calculator, rent vs buy calculator, and financial independence planning calculator.',
+  },
+  {
+    title: 'Tax Planning Tools',
+    text: 'Review deductions and savings with a tax calculator, tax saver calculator, annual income planning tool, and inflation-aware wealth planning dashboard.',
+  },
+];
+
+const SEO_FAQS = [
+  {
+    question: 'Which calculators are available on VestoraX?',
+    answer: 'VestoraX combines a SIP calculator, EMI calculator, retirement calculator, tax calculator, FD calculator, RD calculator, CAGR calculator, compound interest calculator, goal planner, SWP calculator, loan eligibility calculator, balance transfer calculator, inflation calculator, and rent vs buy calculator in one place.',
+  },
+  {
+    question: 'Can I use VestoraX as a SIP calculator and mutual fund calculator?',
+    answer: 'Yes. You can use VestoraX to estimate monthly SIP growth, long-term mutual fund wealth creation, lumpsum investment growth, and compounding scenarios for different return rates and time periods.',
+  },
+  {
+    question: 'Can I use VestoraX as a home loan EMI calculator or personal loan EMI calculator?',
+    answer: 'Yes. The EMI calculator helps you estimate monthly installments, total payment, and total interest for home loans, car loans, and personal loans. You can also compare refinancing with the balance transfer calculator.',
+  },
+  {
+    question: 'Does VestoraX help with retirement planning and tax planning?',
+    answer: 'Yes. The retirement calculator estimates your future retirement corpus, while the tax calculator and tax saver tools help you review deductions, annual income planning, and long-term wealth decisions.',
+  },
+];
+
 // --- Sections ---
 
 const Navbar = () => {
@@ -435,13 +473,16 @@ const Hero = () => {
           <span className="text-sm font-medium text-teal-100">Introducing the All-In-One Financial Toolkit</span>
         </div>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-[1.1] mb-8 tracking-tight max-w-4xl">
-          Plan Your Wealth. <br />
-          <GradientText>Predict Your Future.</GradientText>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-[1.1] mb-8 tracking-tight max-w-5xl">
+          SIP, EMI, Tax and <br />
+          <GradientText>Retirement Calculators</GradientText>
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-400 mb-12 leading-relaxed max-w-2xl">
-          Access a premium suite of intelligent calculators. From SIPs and Retirements to Loans and Taxes-everything you need to make elite financial decisions.
+        <p className="text-lg md:text-xl text-gray-400 mb-8 leading-relaxed max-w-4xl">
+          VestoraX is an all-in-one financial calculator platform with a SIP calculator, EMI calculator, retirement calculator, tax calculator, FD calculator, RD calculator, CAGR calculator, inflation calculator, goal planner, and loan planning tools for smarter money decisions.
+        </p>
+        <p className="text-sm md:text-base text-gray-500 mb-12 leading-relaxed max-w-4xl">
+          Compare investment growth, estimate home loan EMI, plan retirement corpus targets, review tax-saving options, measure inflation impact, and calculate future wealth with one clean financial planning dashboard.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-16">
@@ -912,7 +953,7 @@ const Features = () => {
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Why Choose <GradientText>VestoraX?</GradientText></h2>
-          <p className="text-gray-400">Beyond simple calculators. We provide a comprehensive ecosystem for financial clarity.</p>
+          <p className="text-gray-400">Beyond simple calculators. VestoraX brings together investment calculators, loan calculators, retirement calculators, tax planning tools, and goal-based planning in one financial toolkit.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {[
@@ -931,6 +972,49 @@ const Features = () => {
     </section>
   );
 }
+
+const SEOContent = () => {
+  return (
+    <section className="py-24 bg-[#09172d] border-t border-white/5">
+      <div className="container mx-auto px-6 max-w-7xl">
+        <div className="max-w-4xl mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+            Financial Calculator Hub for <GradientText>SIP, EMI, Retirement, Tax, FD and CAGR Planning</GradientText>
+          </h2>
+          <p className="text-gray-300 text-lg leading-relaxed mb-5">
+            VestoraX is designed for people searching for a reliable SIP calculator, EMI calculator, retirement calculator, tax calculator, FD calculator, RD calculator, inflation calculator, CAGR calculator, and complete wealth planning dashboard. Instead of jumping across multiple websites, you can compare investment planning, loan planning, tax-saving estimates, and retirement planning in one place.
+          </p>
+          <p className="text-gray-400 leading-relaxed">
+            Whether you want a mutual fund calculator, compound interest calculator, home loan EMI calculator, personal loan calculator, loan eligibility calculator, balance transfer calculator, SWP calculator, rent vs buy calculator, or goal-based investment planner, VestoraX gives you one practical workspace to review numbers quickly.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {SEO_KEYWORD_GROUPS.map((group) => (
+            <GlassCard key={group.title} className="p-8">
+              <h3 className="text-2xl font-bold text-white mb-4">{group.title}</h3>
+              <p className="text-gray-400 leading-relaxed">{group.text}</p>
+            </GlassCard>
+          ))}
+        </div>
+
+        <div className="max-w-5xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">
+            Frequently Searched Questions About <GradientText>Financial Calculators</GradientText>
+          </h2>
+          <div className="grid gap-6">
+            {SEO_FAQS.map((faq) => (
+              <GlassCard key={faq.question} className="p-7">
+                <h3 className="text-xl font-bold text-white mb-3">{faq.question}</h3>
+                <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const CTA = () => {
   return (
@@ -964,7 +1048,7 @@ const Footer = () => {
               <span className="text-xl font-bold text-white tracking-tight">Vestora<span className="text-[#10B981]">X</span></span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              Premium financial calculators and wealth planning tools designed for clarity, accuracy, and growth.
+              Premium financial calculators for SIP planning, EMI planning, retirement planning, tax saving, inflation analysis, CAGR tracking, FD growth, and long-term wealth building.
             </p>
           </div>
 
@@ -1017,6 +1101,7 @@ export default function App() {
         <Hero />
         <CalculatorsHub />
         <Features />
+        <SEOContent />
         <CTA />
       </main>
       <Footer />
