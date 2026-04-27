@@ -945,19 +945,41 @@ const CalculatorsHub = () => {
 };
 
 // Sub-component for Sliders to keep code clean
-const SliderInput = ({ label, val, setVal, min, max, step, format }) => (
-  <div>
-    <div className="flex justify-between mb-2">
-      <label className="text-sm font-medium text-gray-300">{label}</label>
-      <span className="text-sm font-bold text-[#10B981]">{format(val)}</span>
+const SliderInput = ({ label, val, setVal, min, max, step, format }) => {
+  const sliderMax = Math.max(max, Number(val) || 0, min);
+
+  return (
+    <div>
+      <div className="flex justify-between gap-4 mb-2 items-center">
+        <label className="text-sm font-medium text-gray-300">{label}</label>
+        <span className="text-sm font-bold text-[#10B981] text-right">{format(val)}</span>
+      </div>
+
+      <div className="flex gap-3 items-center mb-3">
+        <input
+          type="number"
+          inputMode="decimal"
+          min={min}
+          step={step}
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          className="w-40 bg-[#112240] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#10B981] transition-colors"
+        />
+        <span className="text-xs text-gray-500">Enter value manually</span>
+      </div>
+
+      <input
+        type="range"
+        min={min}
+        max={sliderMax}
+        step={step}
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
+        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#10B981]"
+      />
     </div>
-    <input
-      type="range" min={min} max={max} step={step} value={val}
-      onChange={(e) => setVal(e.target.value)}
-      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#10B981]"
-    />
-  </div>
-);
+  );
+};
 
 
 
