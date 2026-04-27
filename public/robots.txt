@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://singhsantosh71735.github.io/vestoraxcalculator.github.io/sitemap.xml
