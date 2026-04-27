@@ -670,7 +670,21 @@ const CalculatorsHub = () => {
 
                   {/* Dynamic Inputs based on activeCalcId */}
                   {(activeCalcId === 'SIP' || activeCalcId === 'Lumpsum' || activeCalcId === 'Compounding') && (
-                    <SliderInput label={activeCalcId === 'SIP' ? 'Monthly Investment' : 'Total Investment'} val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={500} max={1000000} step={500} format={formatCurrency} />
+                    <SliderInput
+                      label={
+                        activeCalcId === 'SIP'
+                          ? 'Monthly Investment'
+                          : activeCalcId === 'Compounding'
+                            ? 'Initial Investment'
+                            : 'Total Investment'
+                      }
+                      val={formState.amount}
+                      setVal={(v) => handleInputChange('amount', v)}
+                      min={500}
+                      max={activeCalcId === 'Compounding' ? 500000000 : 1000000}
+                      step={500}
+                      format={formatCurrency}
+                    />
                   )}
 
                   {activeCalcId === 'FD' && (
