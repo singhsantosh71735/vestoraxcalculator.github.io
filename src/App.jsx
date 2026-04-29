@@ -217,10 +217,9 @@ const calculateWealth = (type, state) => {
 
     case 'Tax':
       let deductions = amount + medical;
-      let cappedDeductions = Math.min(deductions, 200000); // 1.5L 80C + 50k 80D max standard
-      let taxSaved = cappedDeductions * 0.30; // Assuming 30% bracket for impact
+      let taxSaved = deductions * 0.30; // Uses the full manually entered deduction value.
       result.primary = taxSaved;
-      result.totalInvested = cappedDeductions;
+      result.totalInvested = deductions;
       result.estimatedReturns = income - taxSaved;
       break;
 
@@ -242,7 +241,7 @@ const PRIMARY_RESULT_LABELS = {
   Goal: 'Required Monthly SIP',
   Retirement: 'Required Retirement Corpus',
   CAGR: 'Annualized Growth Rate',
-  Eligibility: 'Max Eligible Loan Amount',
+  Eligibility: 'Eligible Loan Amount',
   Transfer: 'Total Savings By Transferring',
   SWP: 'Final Balance After Withdrawals',
   RentBuy: 'Future Property Value',
@@ -353,7 +352,7 @@ const CALCULATORS = [
   { id: 'FD', title: 'FD / RD', category: 'Investment', icon: <Landmark className="w-5 h-5"/>, desc: 'Fixed & recurring deposit returns.', color: 'text-yellow-400', active: true },
 
   { id: 'EMI', title: 'EMI Calculator', category: 'Loan', icon: <Home className="w-5 h-5"/>, desc: 'Plan your home or auto loan payments.', color: 'text-blue-500', active: true },
-  { id: 'Eligibility', title: 'Loan Eligibility', category: 'Loan', icon: <ShieldCheck className="w-5 h-5"/>, desc: 'Check your maximum borrowing capacity.', color: 'text-indigo-400', active: true },
+  { id: 'Eligibility', title: 'Loan Eligibility', category: 'Loan', icon: <ShieldCheck className="w-5 h-5"/>, desc: 'Check your borrowing capacity.', color: 'text-indigo-400', active: true },
   { id: 'Transfer', title: 'Balance Transfer', category: 'Loan', icon: <ArrowRight className="w-5 h-5"/>, desc: 'Compare savings by switching banks.', color: 'text-orange-400', active: true },
 
   { id: 'Goal', title: 'Goal Planner', category: 'Planning', icon: <Target className="w-5 h-5"/>, desc: 'Calculate SIP needed for your dream goal.', color: 'text-pink-400', active: true },
@@ -681,7 +680,6 @@ const CalculatorsHub = () => {
                       val={formState.amount}
                       setVal={(v) => handleInputChange('amount', v)}
                       min={500}
-                      max={activeCalcId === 'Compounding' ? 500000000 : 1000000}
                       step={500}
                       format={formatCurrency}
                     />
@@ -699,75 +697,75 @@ const CalculatorsHub = () => {
                           ))}
                         </div>
                       </div>
-                      <SliderInput label={formState.depositType === 'FD' ? 'Total Deposit' : 'Monthly Deposit'} val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={5000} max={10000000} step={5000} format={formatCurrency} />
+                      <SliderInput label={formState.depositType === 'FD' ? 'Total Deposit' : 'Monthly Deposit'} val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={5000} step={5000} format={formatCurrency} />
                     </>
                   )}
 
                   {activeCalcId === 'Eligibility' && (
                     <>
-                      <SliderInput label="Monthly Net Income" val={formState.income} setVal={(v) => handleInputChange('income', v)} min={20000} max={1000000} step={5000} format={formatCurrency} />
-                      <SliderInput label="Existing Monthly EMIs" val={formState.existingEmi} setVal={(v) => handleInputChange('existingEmi', v)} min={0} max={500000} step={1000} format={formatCurrency} />
+                      <SliderInput label="Monthly Net Income" val={formState.income} setVal={(v) => handleInputChange('income', v)} min={20000} step={5000} format={formatCurrency} />
+                      <SliderInput label="Existing Monthly EMIs" val={formState.existingEmi} setVal={(v) => handleInputChange('existingEmi', v)} min={0} step={1000} format={formatCurrency} />
                     </>
                   )}
 
                   {activeCalcId === 'Transfer' && (
                     <>
-                      <SliderInput label="Outstanding Loan Amount" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={100000} max={50000000} step={100000} format={formatCurrency} />
-                      <SliderInput label="Current Interest Rate (%)" val={formState.rate} setVal={(v) => handleInputChange('rate', v)} min={5} max={20} step={0.1} format={v=>`${v}%`} />
-                      <SliderInput label="New Interest Rate (%)" val={formState.newRate} setVal={(v) => handleInputChange('newRate', v)} min={5} max={20} step={0.1} format={v=>`${v}%`} />
+                      <SliderInput label="Outstanding Loan Amount" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={100000} step={100000} format={formatCurrency} />
+                      <SliderInput label="Current Interest Rate (%)" val={formState.rate} setVal={(v) => handleInputChange('rate', v)} min={0} step={0.1} format={v=>`${v}%`} />
+                      <SliderInput label="New Interest Rate (%)" val={formState.newRate} setVal={(v) => handleInputChange('newRate', v)} min={0} step={0.1} format={v=>`${v}%`} />
                     </>
                   )}
 
                   {activeCalcId === 'SWP' && (
                     <>
-                      <SliderInput label="Total Investment Corpus" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={100000} max={50000000} step={50000} format={formatCurrency} />
-                      <SliderInput label="Monthly Withdrawal" val={formState.withdrawal} setVal={(v) => handleInputChange('withdrawal', v)} min={1000} max={500000} step={1000} format={formatCurrency} />
+                      <SliderInput label="Total Investment Corpus" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={100000} step={50000} format={formatCurrency} />
+                      <SliderInput label="Monthly Withdrawal" val={formState.withdrawal} setVal={(v) => handleInputChange('withdrawal', v)} min={1000} step={1000} format={formatCurrency} />
                     </>
                   )}
 
                   {activeCalcId === 'RentBuy' && (
                     <>
-                      <SliderInput label="Property Value" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={1000000} max={100000000} step={500000} format={formatCurrency} />
-                      <SliderInput label="Current Monthly Rent" val={formState.rent} setVal={(v) => handleInputChange('rent', v)} min={5000} max={500000} step={1000} format={formatCurrency} />
+                      <SliderInput label="Property Value" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={1000000} step={500000} format={formatCurrency} />
+                      <SliderInput label="Current Monthly Rent" val={formState.rent} setVal={(v) => handleInputChange('rent', v)} min={5000} step={1000} format={formatCurrency} />
                     </>
                   )}
 
                   {activeCalcId === 'Tax' && (
                     <>
-                      <SliderInput label="Annual Income" val={formState.income} setVal={(v) => handleInputChange('income', v)} min={300000} max={50000000} step={50000} format={formatCurrency} />
-                      <SliderInput label="80C Investments (PPF, ELSS, etc.)" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={0} max={150000} step={5000} format={formatCurrency} />
-                      <SliderInput label="80D Medical Insurance" val={formState.medical} setVal={(v) => handleInputChange('medical', v)} min={0} max={100000} step={5000} format={formatCurrency} />
+                      <SliderInput label="Annual Income" val={formState.income} setVal={(v) => handleInputChange('income', v)} min={300000} step={50000} format={formatCurrency} />
+                      <SliderInput label="80C Investments (PPF, ELSS, etc.)" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={0} step={5000} format={formatCurrency} />
+                      <SliderInput label="80D Medical Insurance" val={formState.medical} setVal={(v) => handleInputChange('medical', v)} min={0} step={5000} format={formatCurrency} />
                     </>
                   )}
 
                   {activeCalcId === 'Inflation' && (
-                    <SliderInput label="Current Cost / Amount" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={1000} max={10000000} step={1000} format={formatCurrency} />
+                    <SliderInput label="Current Cost / Amount" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={1000} step={1000} format={formatCurrency} />
                   )}
 
                   {activeCalcId === 'Compounding' && (
-                    <SliderInput label="Monthly Contribution (Optional)" val={formState.monthlyAddition} setVal={(v) => handleInputChange('monthlyAddition', v)} min={0} max={100000} step={500} format={formatCurrency} />
+                    <SliderInput label="Monthly Contribution (Optional)" val={formState.monthlyAddition} setVal={(v) => handleInputChange('monthlyAddition', v)} min={0} step={500} format={formatCurrency} />
                   )}
 
                   {activeCalcId === 'EMI' && (
-                    <SliderInput label="Loan Amount" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={100000} max={50000000} step={100000} format={formatCurrency} />
+                    <SliderInput label="Loan Amount" val={formState.amount} setVal={(v) => handleInputChange('amount', v)} min={100000} step={100000} format={formatCurrency} />
                   )}
 
                   {activeCalcId === 'Goal' && (
-                    <SliderInput label="Target Goal Amount" val={formState.targetAmount} setVal={(v) => handleInputChange('targetAmount', v)} min={100000} max={1000000000} step={100000} format={formatCurrency} />
+                    <SliderInput label="Target Goal Amount" val={formState.targetAmount} setVal={(v) => handleInputChange('targetAmount', v)} min={100000} step={100000} format={formatCurrency} />
                   )}
 
                   {activeCalcId === 'Retirement' && (
                     <>
-                      <SliderInput label="Current Age" val={formState.currentAge} setVal={(v) => handleInputChange('currentAge', v)} min={18} max={60} step={1} format={v=>`${v} Yrs`} />
-                      <SliderInput label="Retirement Age" val={formState.retAge} setVal={(v) => handleInputChange('retAge', v)} min={40} max={75} step={1} format={v=>`${v} Yrs`} />
-                      <SliderInput label="Current Monthly Expenses" val={formState.expenses} setVal={(v) => handleInputChange('expenses', v)} min={10000} max={500000} step={5000} format={formatCurrency} />
+                      <SliderInput label="Current Age" val={formState.currentAge} setVal={(v) => handleInputChange('currentAge', v)} min={0} step={1} format={v=>`${v} Yrs`} />
+                      <SliderInput label="Retirement Age" val={formState.retAge} setVal={(v) => handleInputChange('retAge', v)} min={0} step={1} format={v=>`${v} Yrs`} />
+                      <SliderInput label="Current Monthly Expenses" val={formState.expenses} setVal={(v) => handleInputChange('expenses', v)} min={10000} step={5000} format={formatCurrency} />
                     </>
                   )}
 
                   {activeCalcId === 'CAGR' && (
                     <>
-                      <SliderInput label="Initial Investment Value" val={formState.initialVal} setVal={(v) => handleInputChange('initialVal', v)} min={10000} max={10000000} step={10000} format={formatCurrency} />
-                      <SliderInput label="Final Value" val={formState.finalVal} setVal={(v) => handleInputChange('finalVal', v)} min={10000} max={1000000000} step={10000} format={formatCurrency} />
+                      <SliderInput label="Initial Investment Value" val={formState.initialVal} setVal={(v) => handleInputChange('initialVal', v)} min={10000} step={10000} format={formatCurrency} />
+                      <SliderInput label="Final Value" val={formState.finalVal} setVal={(v) => handleInputChange('finalVal', v)} min={10000} step={10000} format={formatCurrency} />
                     </>
                   )}
 
@@ -775,7 +773,7 @@ const CalculatorsHub = () => {
                   {(['SIP', 'Lumpsum', 'Compounding', 'EMI', 'Goal', 'CAGR', 'FD', 'Eligibility', 'Transfer', 'SWP', 'RentBuy', 'Inflation'].includes(activeCalcId)) && (
                     <SliderInput
                       label={['EMI', 'Eligibility', 'Transfer'].includes(activeCalcId) ? 'Loan Tenure (Years)' : 'Time Period (Years)'}
-                      val={formState.years} setVal={(v) => handleInputChange('years', v)} min={1} max={activeCalcId === 'Goal' ? 50 : 40} step={1} format={v=>`${v} Yrs`}
+                      val={formState.years} setVal={(v) => handleInputChange('years', v)} min={1} step={1} format={v=>`${v} Yrs`}
                     />
                   )}
 
@@ -787,7 +785,7 @@ const CalculatorsHub = () => {
                         activeCalcId === 'Inflation' ? 'Inflation Rate (%)' :
                         activeCalcId === 'RentBuy' ? 'Property Appreciation Rate (%)' : 'Expected Return Rate (%)'
                       }
-                      val={formState.rate} setVal={(v) => handleInputChange('rate', v)} min={1} max={30} step={0.1} format={v=>`${v}%`}
+                      val={formState.rate} setVal={(v) => handleInputChange('rate', v)} min={0} step={0.1} format={v=>`${v}%`}
                     />
                   )}
 
@@ -818,7 +816,7 @@ const CalculatorsHub = () => {
                           'Goal': 'Required Monthly SIP',
                           'Retirement': 'Required Retirement Corpus',
                           'CAGR': 'Annualized Growth Rate',
-                          'Eligibility': 'Max Eligible Loan Amount',
+                          'Eligibility': 'Eligible Loan Amount',
                           'Transfer': 'Total Savings By Transferring',
                           'SWP': 'Final Balance After Withdrawals',
                           'RentBuy': 'Future Property Value',
@@ -913,13 +911,13 @@ const CalculatorsHub = () => {
                         {activeCalcId === 'Goal' && "Set up an automated SIP for this exact amount. Automation removes emotion and guarantees progress towards your target."}
                         {activeCalcId === 'CAGR' && "CAGR smooths out volatility to show you the steady annual rate of return. Aim for a CAGR that comfortably beats inflation."}
                         {activeCalcId === 'Compounding' && "Your money is making money! The longer you leave it invested, the steeper the exponential growth curve becomes."}
-                        {activeCalcId === 'Lumpsum' && "Time in the market beats timing the market. Leaving a lump sum untouched allows maximum compounding efficiency."}
+                        {activeCalcId === 'Lumpsum' && "Time in the market beats timing the market. Leaving a lump sum untouched allows compounding to work harder over time."}
                         {activeCalcId === 'FD' && "Fixed Deposits offer guaranteed returns. RD helps you build that corpus systematically every month."}
                         {activeCalcId === 'Eligibility' && "Keeping your existing EMIs low dramatically improves your borrowing power for essential assets like a home."}
                         {activeCalcId === 'Transfer' && "If the savings cover the processing fees of the new bank, a balance transfer is highly recommended to reduce financial burden."}
                         {activeCalcId === 'SWP' && "SWP allows you to create a regular income stream while your remaining capital continues to grow in the market."}
                         {activeCalcId === 'RentBuy' && "Compare the equity built by buying against the opportunity cost of investing the downpayment instead."}
-                        {activeCalcId === 'Tax' && "Maximizing 80C and 80D limits is the first step. Consider ELSS for wealth generation along with tax saving."}
+                        {activeCalcId === 'Tax' && "Enter the deduction values you want to test. Consider ELSS and insurance planning alongside long-term wealth generation."}
                         {activeCalcId === 'Inflation' && "Inflation silently erodes purchasing power. Your investments must yield more than this rate to generate real wealth."}
                       </p>
                     </div>
@@ -944,9 +942,13 @@ const CalculatorsHub = () => {
   );
 };
 
-// Sub-component for Sliders to keep code clean
-const SliderInput = ({ label, val, setVal, min, max, step, format }) => {
-  const sliderMax = Math.max(max, Number(val) || 0, min);
+// Shared numeric input. It intentionally has no max limit; users can type any large value.
+const SliderInput = ({ label, val, setVal, min, step, format }) => {
+  const numericValue = Number(val) || 0;
+  const safeMin = Number(min) || 0;
+  const safeStep = Number(step) || 1;
+  const decrease = () => setVal(Math.max(safeMin, numericValue - safeStep));
+  const increase = () => setVal(numericValue + safeStep);
 
   return (
     <div>
@@ -955,7 +957,15 @@ const SliderInput = ({ label, val, setVal, min, max, step, format }) => {
         <span className="text-sm font-bold text-[#10B981] text-right">{format(val)}</span>
       </div>
 
-      <div className="flex gap-3 items-center mb-3">
+      <div className="flex gap-2 items-center">
+        <button
+          type="button"
+          onClick={decrease}
+          className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#112240] border border-white/10 text-gray-300 hover:border-[#10B981]/50 hover:text-white transition-colors"
+          aria-label={`Decrease ${label}`}
+        >
+          <ChevronDown className="w-4 h-4" />
+        </button>
         <input
           type="number"
           inputMode="decimal"
@@ -963,20 +973,17 @@ const SliderInput = ({ label, val, setVal, min, max, step, format }) => {
           step={step}
           value={val}
           onChange={(e) => setVal(e.target.value)}
-          className="w-40 bg-[#112240] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#10B981] transition-colors"
+          className="min-w-0 flex-1 bg-[#112240] border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#10B981] transition-colors"
         />
-        <span className="text-xs text-gray-500">Enter value manually</span>
+        <button
+          type="button"
+          onClick={increase}
+          className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#112240] border border-white/10 text-gray-300 hover:border-[#10B981]/50 hover:text-white transition-colors"
+          aria-label={`Increase ${label}`}
+        >
+          <ChevronUp className="w-4 h-4" />
+        </button>
       </div>
-
-      <input
-        type="range"
-        min={min}
-        max={sliderMax}
-        step={step}
-        value={val}
-        onChange={(e) => setVal(e.target.value)}
-        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#10B981]"
-      />
     </div>
   );
 };
